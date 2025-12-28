@@ -2,99 +2,192 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PU5C1VER5E</title>
-
   <style>
     :root{
-      /* Screen window alignment (tune these 4 numbers if needed) */
-      --screen-left: 18.5%;
-      --screen-top: 14.5%;
-      --screen-w: 63%;
+      /* ====== YOUR 4 ALIGNMENT KNOBS (screen window) ======
+         These are RELATIVE TO THE MONITOR IMAGE.
+         If the green debug box isn’t on the glass: tweak ONLY these.
+      */
+      --screen-left: 17%;
+      --screen-top: 15%;
+      --screen-w: 66%;
       --screen-h: 72%;
 
-      /* Global scale for the whole TV on the page */
-      --stage-max: 1100px;
+      /* ====== UFO KNOBS ====== */
+      --ufo-w: 22%;     /* <<< UFO SIZE (change this!) */
+      --ufo-x: 50%;     /* horizontal position */
+      --ufo-y: 33%;     /* vertical position */
     }
 
-    html,body{
+    html, body { height: 100%; }
+    body{
       margin:0;
-      height:100%;
       background:#000;
+      display:grid;
+      place-items:center;
+      overflow:hidden;
     }
 
+    /* Stage is your coordinate system */
     .stage{
       position:relative;
-      width:min(var(--stage-max), 96vw);
-      margin: 0 auto;
-      padding: 4vh 0;
+      width:min(92vw, 980px);
+      aspect-ratio: 1 / 1; /* adjust if your monitor image isn’t square */
     }
 
-    /* The full TV image (your intro-bg.png includes the TV + text etc now) */
-    .monitor{
-      width:25%;
-      height:auto;
+    /* The monitor frame image (outside) */
+    .frame{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:contain;
       display:block;
+      pointer-events:none;
       user-select:none;
       -webkit-user-drag:none;
-      pointer-events:none;
-      filter: drop-shadow(0 30px 55px rgba(0,0,0,.65));
+      filter: drop-shadow(0 30px 60px rgba(0,0,0,.7));
+      z-index: 2;
     }
 
-    /* Invisible “screen window” used to place moving parts */
+    /* The glass/screen window (clipped area) */
     .screen{
       position:absolute;
       left: var(--screen-left);
       top:  var(--screen-top);
       width: var(--screen-w);
-      height: var(--screen-h);
+      height:var(--screen-h);
       overflow:hidden;
-      border-radius: 14px;
-      pointer-events:none;
+      border-radius: 10px;
 
-      /* DEBUG: turn on while aligning; turn off when done */
-      outline: 1px solid rgba(57,255,90,.25);
+      /* DEBUG OUTLINE — turn on when aligning, off when done */
+      outline: 1px solid rgba(57,255,90,.25); /* set to 'none' when finished */
+      z-index: 1;
     }
 
+    /* Background that sits “inside the glass” */
+    .screen-bg{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-drag:none;
+      opacity: 1;
+    }
+
+    /* UFO inside the screen window */
     .ufo{
       position:absolute;
-
-      /* POSITION (tune these) */
-      left: 50%;
-      top: 28%;
-      transform: translateX(-50%);
-
-      /* SIZE (THIS is the knob) */
-      width: 60%;
-
-      height:auto;
+      left: var(--ufo-x);
+      top:  var(--ufo-y);
+      width: var(--ufo-w);          /* <<< THIS is the size you change */
+      height: auto;
+      transform: translate(-50%, -50%);
       opacity: .95;
+      pointer-events:none;
+      user-select:none;
+      -webkit-user-drag:none;
 
       animation: ufoHover 4.5s ease-in-out infinite;
-
       filter:
         drop-shadow(0 0 12px rgba(90,255,140,.25))
         drop-shadow(0 0 28px rgba(90,255,140,.15));
     }
 
     @keyframes ufoHover{
-      0%   { transform: translateX(-50%) translateY(0px); }
-      50%  { transform: translateX(-50%) translateY(-10px); }
-      100% { transform: translateX(-50%) translateY(0px); }
+      0%   { transform: translate(-50%, -50%) translateY(0px); }
+      50%  { transform: translate(-50%, -50%) translateY(-10px); }
+      100% { transform: translate(-50%, -50%) translateY(0px); }
+    }
+
+    /* Beams (stacked images, shown one at a time) */
+    .beam{
+      position:absolute;
+      inset:0;
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      opacity:0;
+      pointer-events:none;
+      transition: opacity 140ms linear;
+    }
+
+    .beam.show{ opacity: 1; }
+
+    /* tiny click target so you can test without UI clutter */
+    .hotspot{
+      position:absolute;
+      inset:0;
+      z-index: 3; /* above frame for clicking */
+      background: transparent;
+      border:0;
+      cursor: pointer;
     }
   </style>
 </head>
 
 <body>
   <div class="stage">
-    <!-- If you still have caching issues, bump ?v=2 to ?v=3 etc -->
-    <img class="monitor" src="./monitor.png?v=2" alt="" />
+    <!-- Screen window (clipped) -->
+    <div class="screen" id="screen">
+      <img class="screen-bg" src="./intro-bg.png" alt="">
+      <img class="ufo" src="./ufo.png" alt="">
 
-    <div class="screen">
-      <img class="ufo" src="./ufo.png?v=2" alt="" />
+      <!-- Beams -->
+      <img class="beam" src="./beam-01.png" alt="">
+      <img class="beam" src="./beam-02.png" alt="">
+      <img class="beam" src="./beam-03.png" alt="">
+      <img class="beam" src="./beam-04.png" alt="">
+      <img class="beam" src="./beam-05.png" alt="">
+      <img class="beam" src="./beam-06.png" alt="">
+      <img class="beam" src="./beam-07.png" alt="">
+      <img class="beam" src="./beam-08.png" alt="">
     </div>
+
+    <!-- Monitor frame on top -->
+    <img class="frame" src="./monitor-frame.png" alt="">
+
+    <!-- Click anywhere to trigger beams (temporary) -->
+    <button class="hotspot" id="hotspot" aria-label="Play beams"></button>
   </div>
+
+  <script>
+    const beams = Array.from(document.querySelectorAll('.beam'));
+    const hotspot = document.getElementById('hotspot');
+
+    const BEAM_STEP_MS = 90;     // speed
+    const AFTER_BEAM_MS = 220;   // pause after last frame
+
+    function hideAllBeams(){
+      beams.forEach(b => b.classList.remove('show'));
+    }
+
+    function playBeams(){
+      hideAllBeams();
+      let i = 0;
+
+      const tick = () => {
+        if (i > 0) beams[i - 1].classList.remove('show');
+
+        if (i < beams.length) {
+          beams[i].classList.add('show');
+          i++;
+          setTimeout(tick, BEAM_STEP_MS);
+        } else {
+          setTimeout(() => hideAllBeams(), AFTER_BEAM_MS);
+        }
+      };
+
+      tick();
+    }
+
+    hotspot.addEventListener('click', playBeams);
+  </script>
 </body>
 </html>
-
 
