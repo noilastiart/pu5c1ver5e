@@ -2,192 +2,215 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>PU5C1VER5E</title>
+
   <style>
     :root{
-      /* ====== YOUR 4 ALIGNMENT KNOBS (screen window) ======
-         These are RELATIVE TO THE MONITOR IMAGE.
-         If the green debug box isn’t on the glass: tweak ONLY these.
+      /* ====== TUNE THESE 4 NUMBERS ONLY (screen window alignment) ======
+         These are percentages relative to the monitor.png image.
+         If things look "off", tweak these until the green outline hugs the glass.
       */
-      --screen-left: 17%;
-      --screen-top: 15%;
-      --screen-w: 66%;
-      --screen-h: 72%;
+      --screen-left: 17.5%;
+      --screen-top: 18.5%;
+      --screen-w: 65%;
+      --screen-h: 67%;
 
-      /* ====== UFO KNOBS ====== */
-      --ufo-w: 22%;     /* <<< UFO SIZE (change this!) */
-      --ufo-x: 50%;     /* horizontal position */
-      --ufo-y: 33%;     /* vertical position */
+      /* Debug outline (set to "none" when you're done) */
+      --debug-outline: 1px solid rgba(57,255,90,.25);
+      /* --debug-outline: none; */
     }
 
-    html, body { height: 100%; }
-    body{
+    html, body{
       margin:0;
+      height:100%;
       background:#000;
-      display:grid;
-      place-items:center;
-      overflow:hidden;
     }
 
-    /* Stage is your coordinate system */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:2.5vh 2vw;
+    }
+
     .stage{
       position:relative;
-      width:min(92vw, 980px);
-      aspect-ratio: 1 / 1; /* adjust if your monitor image isn’t square */
+      width:min(92vw, 1100px);
+      height:auto;
     }
 
-    /* The monitor frame image (outside) */
-    .frame{
-      position:absolute;
-      inset:0;
+    /* The monitor artwork */
+    .monitor{
       width:100%;
-      height:100%;
-      object-fit:contain;
+      height:auto;
       display:block;
-      pointer-events:none;
       user-select:none;
       -webkit-user-drag:none;
-      filter: drop-shadow(0 30px 60px rgba(0,0,0,.7));
-      z-index: 2;
+      pointer-events:none;
+      filter: drop-shadow(0 30px 55px rgba(0,0,0,.65));
     }
 
-    /* The glass/screen window (clipped area) */
+    /* The clipped "glass" window where we place UFO + beams */
     .screen{
       position:absolute;
-      left: var(--screen-left);
-      top:  var(--screen-top);
-      width: var(--screen-w);
+      left:var(--screen-left);
+      top:var(--screen-top);
+      width:var(--screen-w);
       height:var(--screen-h);
       overflow:hidden;
-      border-radius: 10px;
-
-      /* DEBUG OUTLINE — turn on when aligning, off when done */
-      outline: 1px solid rgba(57,255,90,.25); /* set to 'none' when finished */
-      z-index: 1;
+      border-radius:10px;
+      outline: var(--debug-outline);
+      pointer-events:none; /* so clicks pass through to hotspot */
     }
 
-    /* Background that sits “inside the glass” */
-    .screen-bg{
+    /* Content inside the screen */
+    .ufo, .beam, .beamall, .beamglow{
       position:absolute;
-      inset:0;
+      left:0; top:0;
       width:100%;
       height:100%;
-      object-fit:cover;
       pointer-events:none;
       user-select:none;
       -webkit-user-drag:none;
-      opacity: 1;
     }
 
-    /* UFO inside the screen window */
+    /* UFO placement + size (THIS is where you change UFO size) */
     .ufo{
-      position:absolute;
-      left: var(--ufo-x);
-      top:  var(--ufo-y);
-      width: var(--ufo-w);          /* <<< THIS is the size you change */
-      height: auto;
-      transform: translate(-50%, -50%);
-      opacity: .95;
-      pointer-events:none;
-      user-select:none;
-      -webkit-user-drag:none;
-
-      animation: ufoHover 4.5s ease-in-out infinite;
+      left:50%;
+      top:32%;
+      width:42%;              /* <-- make bigger/smaller here */
+      height:auto;
+      transform:translateX(-50%);
+      opacity:.95;
+      animation:ufoHover 4.5s ease-in-out infinite;
       filter:
         drop-shadow(0 0 12px rgba(90,255,140,.25))
         drop-shadow(0 0 28px rgba(90,255,140,.15));
     }
 
     @keyframes ufoHover{
-      0%   { transform: translate(-50%, -50%) translateY(0px); }
-      50%  { transform: translate(-50%, -50%) translateY(-10px); }
-      100% { transform: translate(-50%, -50%) translateY(0px); }
+      0%   { transform:translateX(-50%) translateY(0); }
+      50%  { transform:translateX(-50%) translateY(-10px); }
+      100% { transform:translateX(-50%) translateY(0); }
     }
 
-    /* Beams (stacked images, shown one at a time) */
+    /* Beam frames default hidden */
+    .beam, .beamall, .beamglow{ opacity:0; }
+
+    /* Make each beam frame fill the screen window */
     .beam{
-      position:absolute;
-      inset:0;
-      width:100%;
-      height:100%;
-      object-fit:cover;
-      opacity:0;
-      pointer-events:none;
-      transition: opacity 140ms linear;
+      object-fit:contain;
     }
 
-    .beam.show{ opacity: 1; }
+    /* A full “all beams” layer + glow (optional end cap) */
+    .beamall{ object-fit:contain; }
+    .beamglow{
+      object-fit:contain;
+      mix-blend-mode:screen;
+    }
 
-    /* tiny click target so you can test without UI clutter */
+    /* Click area (so you can trigger beam sequence) */
     .hotspot{
       position:absolute;
-      inset:0;
-      z-index: 3; /* above frame for clicking */
-      background: transparent;
+      left:var(--screen-left);
+      top:var(--screen-top);
+      width:var(--screen-w);
+      height:var(--screen-h);
+      background:transparent;
       border:0;
-      cursor: pointer;
+      cursor:pointer;
     }
   </style>
 </head>
 
 <body>
-  <div class="stage">
-    <!-- Screen window (clipped) -->
-    <div class="screen" id="screen">
-      <img class="screen-bg" src="./intro-bg.png" alt="">
-      <img class="ufo" src="./ufo.png" alt="">
+  <div class="wrap">
+    <div class="stage" id="stage">
 
-      <!-- Beams -->
-      <img class="beam" src="./beam-01.png" alt="">
-      <img class="beam" src="./beam-02.png" alt="">
-      <img class="beam" src="./beam-03.png" alt="">
-      <img class="beam" src="./beam-04.png" alt="">
-      <img class="beam" src="./beam-05.png" alt="">
-      <img class="beam" src="./beam-06.png" alt="">
-      <img class="beam" src="./beam-07.png" alt="">
-      <img class="beam" src="./beam-08.png" alt="">
+      <!-- Monitor art -->
+      <img class="monitor" src="./monitor.png" alt="monitor">
+
+      <!-- Clipped screen window -->
+      <div class="screen" id="screen">
+        <img class="ufo" src="./ufo.png" alt="ufo">
+
+        <!-- Beam sequence frames -->
+        <img class="beam" src="./beam-01.png" alt="">
+        <img class="beam" src="./beam-02.png" alt="">
+        <img class="beam" src="./beam-03.png" alt="">
+        <img class="beam" src="./beam-04.png" alt="">
+        <img class="beam" src="./beam-05.png" alt="">
+        <img class="beam" src="./beam-06.png" alt="">
+        <img class="beam" src="./beam-07.png" alt="">
+        <img class="beam" src="./beam-08.png" alt="">
+
+        <!-- Optional: final “all beams” + glow -->
+        <img class="beamall" src="./beamall.png" alt="">
+        <img class="beamglow" src="./beamall-glow.png" alt="">
+      </div>
+
+      <!-- Click area to trigger beams -->
+      <button class="hotspot" id="hotspot" aria-label="Trigger beams"></button>
     </div>
-
-    <!-- Monitor frame on top -->
-    <img class="frame" src="./monitor-frame.png" alt="">
-
-    <!-- Click anywhere to trigger beams (temporary) -->
-    <button class="hotspot" id="hotspot" aria-label="Play beams"></button>
   </div>
 
   <script>
     const beams = Array.from(document.querySelectorAll('.beam'));
+    const beamAll = document.querySelector('.beamall');
+    const beamGlow = document.querySelector('.beamglow');
     const hotspot = document.getElementById('hotspot');
 
-    const BEAM_STEP_MS = 90;     // speed
-    const AFTER_BEAM_MS = 220;   // pause after last frame
+    const BEAM_STEP_MS = 70;
+    const AFTER_BEAM_MS = 180;
 
     function hideAllBeams(){
-      beams.forEach(b => b.classList.remove('show'));
+      beams.forEach(b => b.style.opacity = 0);
+      if (beamAll) beamAll.style.opacity = 0;
+      if (beamGlow) beamGlow.style.opacity = 0;
     }
 
-    function playBeams(){
-      hideAllBeams();
-      let i = 0;
+    function playBeamSequence(){
+      return new Promise((resolve) => {
+        hideAllBeams();
 
-      const tick = () => {
-        if (i > 0) beams[i - 1].classList.remove('show');
+        let i = 0;
+        const tick = () => {
+          if (i > 0) beams[i-1].style.opacity = 0;
 
-        if (i < beams.length) {
-          beams[i].classList.add('show');
-          i++;
-          setTimeout(tick, BEAM_STEP_MS);
-        } else {
-          setTimeout(() => hideAllBeams(), AFTER_BEAM_MS);
-        }
-      };
+          if (i < beams.length) {
+            beams[i].style.opacity = 1;
+            i++;
+            setTimeout(tick, BEAM_STEP_MS);
+          } else {
+            setTimeout(() => {
+              // Optional: show the “all beams” layer for a beat
+              if (beamAll) beamAll.style.opacity = 1;
+              if (beamGlow) beamGlow.style.opacity = 1;
 
-      tick();
+              setTimeout(() => {
+                hideAllBeams();
+                resolve();
+              }, AFTER_BEAM_MS + 250);
+            }, AFTER_BEAM_MS);
+          }
+        };
+
+        tick();
+      });
     }
 
-    hotspot.addEventListener('click', playBeams);
+    let playing = false;
+    hotspot.addEventListener('click', async () => {
+      if (playing) return;
+      playing = true;
+      try { await playBeamSequence(); }
+      finally { playing = false; }
+    });
+
+    // Start clean
+    hideAllBeams();
   </script>
 </body>
 </html>
-
