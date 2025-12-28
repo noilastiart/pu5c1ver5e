@@ -3,140 +3,98 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PUSC1VER5E</title>
+  <title>PU5C1VER5E</title>
+
   <style>
     :root{
-      /* ====== SCREEN WINDOW TUNING ======
-         These are the ONLY numbers you tweak to align the “live screen”
-         with the monitor glass area in your intro-bg.png.
-      */
-      --screen-left: 16.5%;
-      --screen-top:  14.5%;
-      --screen-w:    67%;
-      --screen-h:    74%;
-      --screen-radius: 18px;
+      /* Screen window alignment (tune these 4 numbers if needed) */
+      --screen-left: 18.5%;
+      --screen-top: 14.5%;
+      --screen-w: 63%;
+      --screen-h: 72%;
+
+      /* Global scale for the whole TV on the page */
+      --stage-max: 1100px;
     }
 
     html,body{
-      height:100%;
       margin:0;
+      height:100%;
       background:#000;
-      overflow:hidden;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     }
 
-    /* Center the whole composition on the page */
     .stage{
       position:relative;
-      width:min(1100px, 92vw);
-      aspect-ratio: 1 / 1; /* your intro bg is basically square */
+      width:min(var(--stage-max), 96vw);
       margin: 0 auto;
-      top: 50%;
-      transform: translateY(-50%);
+      padding: 4vh 0;
     }
 
-    /* Your single “all-in-one” background art */
-    .intro-bg{
-      position:absolute;
-      inset:0;
+    /* The full TV image (your intro-bg.png includes the TV + text etc now) */
+    .monitor{
       width:100%;
-      height:100%;
-      object-fit:contain;
+      height:auto;
       display:block;
-      filter: drop-shadow(0 30px 55px rgba(0,0,0,.70));
       user-select:none;
       -webkit-user-drag:none;
       pointer-events:none;
+      filter: drop-shadow(0 30px 55px rgba(0,0,0,.65));
     }
 
-    /* Invisible screen window used to place UFO (and later beams + access UI) */
+    /* Invisible “screen window” used to place moving parts */
     .screen{
       position:absolute;
       left: var(--screen-left);
       top:  var(--screen-top);
       width: var(--screen-w);
-      height:var(--screen-h);
-      border-radius: var(--screen-radius);
+      height: var(--screen-h);
       overflow:hidden;
+      border-radius: 14px;
+      pointer-events:none;
 
-      /* TEMP outline so you can see alignment. Remove later. */
+      /* DEBUG: turn on while aligning; turn off when done */
       outline: 1px solid rgba(57,255,90,.25);
     }
 
-    /* Subtle CRT vibe over the “screen” area only */
-    .screen::before{
-      content:"";
+    .ufo{
       position:absolute;
-      inset:-2px;
-      pointer-events:none;
-      opacity:.45;
-      background:
-        radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,.55) 78%),
-        repeating-linear-gradient(
-          to bottom,
-          rgba(0,0,0,.00) 0px,
-          rgba(0,0,0,.00) 2px,
-          rgba(0,0,0,.14) 3px
-        );
-      mix-blend-mode:multiply;
-    }
 
-    /* ===== UFO ===== */
-     .ufo{
-  .ufo{
-  position:absolute;
-  left:50%;
-  top:34%;
-  width:60%;
-  height:auto;
-  transform:translateX(-50%);
-  pointer-events:none;
-}
+      /* POSITION (tune these) */
+      left: 50%;
+      top: 28%;
+      transform: translateX(-50%);
 
+      /* SIZE (THIS is the knob) */
+      width: 60%;
 
-  /* FLOATING (this is the key line) */
-  animation: ufoHover 4.5s ease-in-out infinite;
+      height:auto;
+      opacity: .95;
 
-  filter:
-    drop-shadow(0 0 12px rgba(90,255,140,.25))
-    drop-shadow(0 0 28px rgba(90,255,140,.15));
-}
-
-@keyframes ufoHover{
-  0%   { transform: translate(-50%, 0); }
-  50%  { transform: translate(-50%, -10px); }
-  100% { transform: translate(-50%, 0); }
-}
-
-}
-
+      animation: ufoHover 4.5s ease-in-out infinite;
 
       filter:
-        drop-shadow(0 0 14px rgba(90,255,140,.35))
-        drop-shadow(0 0 36px rgba(90,255,140,.18));
+        drop-shadow(0 0 12px rgba(90,255,140,.25))
+        drop-shadow(0 0 28px rgba(90,255,140,.15));
     }
 
     @keyframes ufoHover{
-      0%   { transform: translate(-50%, 0); }
-      50%  { transform: translate(-50%, -10px); }
-      100% { transform: translate(-50%, 0); }
+      0%   { transform: translateX(-50%) translateY(0px); }
+      50%  { transform: translateX(-50%) translateY(-10px); }
+      100% { transform: translateX(-50%) translateY(0px); }
     }
-
-    /* If you want the outline hidden already, set this to none */
-    .screen.no-outline{ outline:none; }
   </style>
 </head>
 
 <body>
   <div class="stage">
-    <!-- Your combined monitor/title/tag art -->
-    <img class="monitor" src="./monitor.png" alt="" />
+    <!-- If you still have caching issues, bump ?v=2 to ?v=3 etc -->
+    <img class="monitor" src="./monitor.png?v=2" alt="" />
 
-    <!-- This is the “screen window” where we place interactive/animated elements -->
-    <div class="screen" id="screen">
-      <img class="ufo" src="./ufo.png." alt="" />
+    <div class="screen">
+      <img class="ufo" src="./ufo.png?v=2" alt="" />
     </div>
   </div>
 </body>
 </html>
+
 
