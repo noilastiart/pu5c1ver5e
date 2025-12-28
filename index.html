@@ -1,28 +1,35 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>PUSCIVERSE</title>
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PU5C1VER5E</title>
   <style>
-    html, body {
-      margin: 0;
-      height: 100%;
-      background: black;
-      display: grid;
-      place-items: center;
+    body{
+      margin:0;
+      background:#000;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
     }
 
-    h1 {
-      color: #39ff5a;
-      font-family: monospace;
-      letter-spacing: 0.2em;
+    /* THIS is where you control overall monitor size */
+    .monitor{
+      width:min(1000px, 95vw); /* <-- adjust this number */
+    }
+
+    .monitor img{
+      width:100%;
+      height:auto;
+      display:block;
     }
   </style>
 </head>
-
 <body>
-  <h1>PUSCIVERSE ONLINE</h1>
+  <div class="monitor">
+    <img src="intro-bg.png" alt="Monitor background">
+  </div>
 </body>
 </html>
+
 
