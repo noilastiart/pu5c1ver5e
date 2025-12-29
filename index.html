@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -309,8 +309,8 @@
                     beamElements.forEach(el => el.style.display = 'none');
                     passwordContainer.style.display = 'none';
                     
-                    // Show video - Replace YOUR_VIDEO_ID with your actual Vimeo video ID
-                    videoContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
+                    // Show video
+                    videoContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/1128635365?autoplay=1&badge=0&autopause=0&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" allowfullscreen></iframe>';
                     videoContainer.classList.add('active');
                 } else {
                     // Access denied
