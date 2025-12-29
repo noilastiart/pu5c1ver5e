@@ -26,31 +26,20 @@
             width: 90vw;
             max-width: 1200px;
             aspect-ratio: 4/3;
-        }
-
-        .monitor-frame {
-            width: 100%;
-            height: 100%;
             background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
             background-size: contain;
-            position: relative;
-            z-index: 10;
-            pointer-events: none;
         }
 
-        .screen-content {
+        .screen-area {
             position: absolute;
             top: 8%;
             left: 10.5%;
             width: 79%;
             height: 79%;
-            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beamall-glow.png') no-repeat center center;
-            background-size: cover;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            z-index: 1;
         }
 
         .ufo {
@@ -59,13 +48,14 @@
             left: 50%;
             transform: translateX(-50%);
             width: 45%;
+            max-width: 400px;
             opacity: 0;
-            animation: ufoHover 3s ease-in-out infinite;
             z-index: 3;
         }
 
         .ufo.visible {
             opacity: 1;
+            animation: ufoHover 3s ease-in-out infinite;
         }
 
         @keyframes ufoHover {
@@ -81,6 +71,7 @@
             height: 100%;
             opacity: 0;
             z-index: 2;
+            pointer-events: none;
         }
 
         .beam img {
@@ -92,14 +83,20 @@
             object-fit: contain;
         }
 
+        .beam.visible {
+            opacity: 1;
+        }
+
         .password-container {
             position: absolute;
-            bottom: 25%;
+            bottom: 20%;
             left: 50%;
             transform: translateX(-50%);
             opacity: 0;
             z-index: 4;
             text-align: center;
+            width: 80%;
+            max-width: 400px;
         }
 
         .password-container.visible {
@@ -127,16 +124,17 @@
             font-family: 'Courier New', monospace;
             font-size: 1.5rem;
             padding: 10px 20px;
+            width: 100%;
             text-align: center;
             letter-spacing: 5px;
             text-transform: uppercase;
             outline: none;
             box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
-            animation: cursorBlink 1s infinite;
         }
 
         .password-input:focus {
             box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+            animation: cursorBlink 1s infinite;
         }
 
         @keyframes cursorBlink {
@@ -144,18 +142,20 @@
             50%, 100% { border-right: 3px solid transparent; }
         }
 
-        .access-denied {
-            color: #ff0000;
-            font-size: 1.5rem;
-            text-shadow: 0 0 10px #ff0000;
-            letter-spacing: 3px;
-            animation: shake 0.5s;
+        .password-container.shake {
+            animation: shake 0.5s !important;
         }
 
         @keyframes shake {
             0%, 100% { transform: translateX(-50%) translateX(0); }
             25% { transform: translateX(-50%) translateX(-10px); }
+            50% { transform: translateX(-50%) translateX(0); }
             75% { transform: translateX(-50%) translateX(10px); }
+        }
+
+        .access-denied {
+            color: #ff0000 !important;
+            text-shadow: 0 0 10px #ff0000 !important;
         }
 
         .video-container {
@@ -166,10 +166,13 @@
             height: 100%;
             display: none;
             z-index: 5;
+            background: #000;
         }
 
         .video-container.active {
-            display: block;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .video-container iframe {
@@ -191,7 +194,7 @@
 </head>
 <body>
     <div class="monitor-container">
-        <div class="screen-content">
+        <div class="screen-area">
             <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/ufo.png" alt="UFO" class="ufo" id="ufo">
             
             <div class="beam" id="beam1"></div>
@@ -204,7 +207,7 @@
             <div class="beam" id="beam8"></div>
             
             <div class="password-container" id="passwordContainer">
-                <div class="password-label">ENTER ACCESS CODE:</div>
+                <div class="password-label" id="passwordLabel">ENTER ACCESS CODE:</div>
                 <input type="text" class="password-input" id="passwordInput" maxlength="10" autocomplete="off">
             </div>
 
@@ -212,14 +215,15 @@
                 <!-- Vimeo embed will go here -->
             </div>
         </div>
-        <div class="monitor-frame"></div>
     </div>
 
     <script>
         const ufo = document.getElementById('ufo');
         const passwordContainer = document.getElementById('passwordContainer');
         const passwordInput = document.getElementById('passwordInput');
+        const passwordLabel = document.getElementById('passwordLabel');
         const videoContainer = document.getElementById('videoContainer');
+        const screenArea = document.querySelector('.screen-area');
         
         const beams = [
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-01.png',
@@ -230,6 +234,17 @@
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-06.png',
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-07.png',
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-08.png'
+        ];
+
+        const beamElements = [
+            document.getElementById('beam1'),
+            document.getElementById('beam2'),
+            document.getElementById('beam3'),
+            document.getElementById('beam4'),
+            document.getElementById('beam5'),
+            document.getElementById('beam6'),
+            document.getElementById('beam7'),
+            document.getElementById('beam8')
         ];
 
         let currentBeam = 0;
@@ -248,9 +263,14 @@
 
         function startBeamAnimation() {
             beamInterval = setInterval(() => {
-                const beamElement = document.getElementById(`beam${currentBeam + 1}`);
-                beamElement.innerHTML = `<img src="${beams[currentBeam]}" alt="Beam ${currentBeam + 1}">`;
-                beamElement.style.opacity = '1';
+                // Hide all beams first
+                beamElements.forEach(el => el.classList.remove('visible'));
+                
+                // Show beams up to current index
+                for (let i = 0; i <= currentBeam; i++) {
+                    beamElements[i].innerHTML = `<img src="${beams[i]}" alt="Beam ${i + 1}">`;
+                    beamElements[i].classList.add('visible');
+                }
                 
                 currentBeam++;
                 
@@ -276,29 +296,39 @@
                     // Clear intervals
                     clearInterval(beamInterval);
                     
-                    // Hide password container
+                    // Hide all animated elements
+                    ufo.style.display = 'none';
+                    beamElements.forEach(el => el.style.display = 'none');
                     passwordContainer.style.display = 'none';
                     
-                    // Show video - Replace with your Vimeo video ID
-                    videoContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                    // Show video - Replace YOUR_VIDEO_ID with your actual Vimeo video ID
+                    videoContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>';
                     videoContainer.classList.add('active');
                 } else {
                     // Access denied
-                    const label = passwordContainer.querySelector('.password-label');
-                    const originalText = label.textContent;
-                    label.textContent = 'ACCESS DENIED';
-                    label.classList.add('access-denied');
-                    passwordContainer.style.animation = 'shake 0.5s';
+                    const originalText = passwordLabel.textContent;
+                    passwordLabel.textContent = 'ACCESS DENIED';
+                    passwordLabel.classList.add('access-denied');
+                    passwordContainer.classList.add('shake');
                     
                     setTimeout(() => {
-                        label.textContent = originalText;
-                        label.classList.remove('access-denied');
-                        passwordContainer.style.animation = '';
+                        passwordLabel.textContent = originalText;
+                        passwordLabel.classList.remove('access-denied');
+                        passwordContainer.classList.remove('shake');
                         passwordInput.value = '';
+                        passwordInput.focus();
                     }, 1500);
                 }
             }
         });
+
+        // Auto-focus on password input when visible
+        const observer = new MutationObserver(() => {
+            if (passwordContainer.classList.contains('visible')) {
+                passwordInput.focus();
+            }
+        });
+        observer.observe(passwordContainer, { attributes: true });
     </script>
 </body>
 </html>
