@@ -1,221 +1,304 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>PU5C1VER5E</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUSCIVERSE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    :root{
-      /* Screen window alignment (tweak only these 4 if needed) */
-      --screen-left: 17.5%;
-      --screen-top: 18.5%;
-      --screen-w: 65%;
-      --screen-h: 67%;
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+        }
 
-      /* Debug outline (turn off when aligned) */
-      --debug-outline: 1px solid rgba(57,255,90,.25);
-      /* --debug-outline: none; */
-    }
+        .monitor-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1200px;
+            aspect-ratio: 4/3;
+        }
 
-    html, body{ margin:0; height:100%; background:#000; }
+        .monitor-frame {
+            width: 100%;
+            height: 100%;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
+            background-size: contain;
+            position: relative;
+            z-index: 10;
+            pointer-events: none;
+        }
 
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:2.5vh 2vw;
-    }
+        .screen-content {
+            position: absolute;
+            top: 8%;
+            left: 10.5%;
+            width: 79%;
+            height: 79%;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beamall-glow.png') no-repeat center center;
+            background-size: cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
 
-    .stage{
-      position:relative;
-      width:min(92vw, 1100px);
-    }
+        .ufo {
+            position: absolute;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 45%;
+            opacity: 0;
+            animation: ufoHover 3s ease-in-out infinite;
+            z-index: 3;
+        }
 
-    /* Monitor art */
-    .monitor{
-      width:100%;
-      height:auto;
-      display:block;
-      user-select:none;
-      -webkit-user-drag:none;
-      pointer-events:none;
-      filter: drop-shadow(0 30px 55px rgba(0,0,0,.65));
-      position:relative;
-      z-index:1;
-    }
+        .ufo.visible {
+            opacity: 1;
+        }
 
-    /* Clipped "glass" window */
-    .screen{
-      position:absolute;
-      left:var(--screen-left);
-      top:var(--screen-top);
-      width:var(--screen-w);
-      height:var(--screen-h);
-      overflow:hidden;
-      border-radius:10px;
-      outline: var(--debug-outline);
-      z-index:2;
-      pointer-events:none; /* click goes to hotspot */
-    }
+        @keyframes ufoHover {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
 
-    /* Layers inside screen */
-    .ufo, .beam, .beamall, .beamglow, .password{
-      position:absolute;
-      pointer-events:none;
-      user-select:none;
-      -webkit-user-drag:none;
-    }
+        .beam {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            z-index: 2;
+        }
 
-    /* UFO (change size here) */
-    .ufo{
-      left:50%;
-      top:32%;
-      width:85%; /* <-- BIGGER number = bigger UFO */
-      height:auto;
-      transform:translateX(-50%);
-      opacity:.95;
-      z-index:3;
-      animation:ufoHover 4.5s ease-in-out infinite;
-      filter:
-        drop-shadow(0 0 12px rgba(90,255,140,.25))
-        drop-shadow(0 0 28px rgba(90,255,140,.15));
-    }
+        .beam img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
 
-    @keyframes ufoHover{
-      0%   { transform:translateX(-50%) translateY(0); }
-      50%  { transform:translateX(-50%) translateY(-10px); }
-      100% { transform:translateX(-50%) translateY(0); }
-    }
+        .password-container {
+            position: absolute;
+            bottom: 25%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            z-index: 4;
+            text-align: center;
+        }
 
-    /* Beam frames fill the screen */
-    .beam, .beamall, .beamglow{
-      left:0; top:0;
-      width:100%;
-      height:100%;
-      object-fit:contain;
-      z-index:2;
-      opacity:0;
-      mix-blend-mode:screen; /* helps beams “read” on dark glass */
-    }
+        .password-container.visible {
+            opacity: 1;
+            animation: fadeIn 1s ease-in;
+        }
 
-    .beamglow{
-      z-index:4;
-      opacity:0;
-      mix-blend-mode:screen;
-    }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
 
-    /* Password box image (hidden until after beams) */
-    .password{
-      left:50%;
-      top:62%;
-      width:62%;
-      height:auto;
-      transform:translateX(-50%);
-      z-index:5;
-      opacity:0;
-      transition: opacity 250ms ease;
-      filter: drop-shadow(0 0 16px rgba(90,255,140,.18));
-    }
+        .password-label {
+            color: #00ff00;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            text-shadow: 0 0 10px #00ff00;
+            letter-spacing: 3px;
+        }
 
-    .show-password .password{
-      opacity:1;
-    }
+        .password-input {
+            background: rgba(0, 0, 0, 0.8);
+            border: 2px solid #00ff00;
+            color: #00ff00;
+            font-family: 'Courier New', monospace;
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            text-align: center;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            outline: none;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            animation: cursorBlink 1s infinite;
+        }
 
-    /* Click area MUST be on top */
-    .hotspot{
-      position:absolute;
-      left:var(--screen-left);
-      top:var(--screen-top);
-      width:var(--screen-w);
-      height:var(--screen-h);
-      background:transparent;
-      border:0;
-      cursor:pointer;
-      z-index:10;     /* <-- this is the “beams won’t play” fix */
-    }
-  </style>
+        .password-input:focus {
+            box-shadow: 0 0 30px rgba(0, 255, 0, 0.8);
+        }
+
+        @keyframes cursorBlink {
+            0%, 49% { border-right: 3px solid #00ff00; }
+            50%, 100% { border-right: 3px solid transparent; }
+        }
+
+        .access-denied {
+            color: #ff0000;
+            font-size: 1.5rem;
+            text-shadow: 0 0 10px #ff0000;
+            letter-spacing: 3px;
+            animation: shake 0.5s;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(-50%) translateX(0); }
+            25% { transform: translateX(-50%) translateX(-10px); }
+            75% { transform: translateX(-50%) translateX(10px); }
+        }
+
+        .video-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 5;
+        }
+
+        .video-container.active {
+            display: block;
+        }
+
+        .video-container iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .password-label {
+                font-size: 0.9rem;
+            }
+            .password-input {
+                font-size: 1rem;
+                padding: 8px 15px;
+            }
+        }
+    </style>
 </head>
-
 <body>
-  <div class="wrap">
-    <div class="stage" id="stage">
+    <div class="monitor-container">
+        <div class="screen-content">
+            <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/ufo.png" alt="UFO" class="ufo" id="ufo">
+            
+            <div class="beam" id="beam1"></div>
+            <div class="beam" id="beam2"></div>
+            <div class="beam" id="beam3"></div>
+            <div class="beam" id="beam4"></div>
+            <div class="beam" id="beam5"></div>
+            <div class="beam" id="beam6"></div>
+            <div class="beam" id="beam7"></div>
+            <div class="beam" id="beam8"></div>
+            
+            <div class="password-container" id="passwordContainer">
+                <div class="password-label">ENTER ACCESS CODE:</div>
+                <input type="text" class="password-input" id="passwordInput" maxlength="10" autocomplete="off">
+            </div>
 
-      <img class="monitor" src="./monitor.png" alt="monitor">
-
-      <div class="screen" id="screen">
-        <img class="ufo" src="./ufo.png" alt="ufo">
-
-        <img class="beam" src="./beam-01.png" alt="">
-        <img class="beam" src="./beam-02.png" alt="">
-        <img class="beam" src="./beam-03.png" alt="">
-        <img class="beam" src="./beam-04.png" alt="">
-        <img class="beam" src="./beam-05.png" alt="">
-        <img class="beam" src="./beam-06.png" alt="">
-        <img class="beam" src="./beam-07.png" alt="">
-        <img class="beam" src="./beam-08.png" alt="">
-
-        <img class="beamall" src="./beamall.png" alt="">
-        <img class="beamglow" src="./beamall-glow.png" alt="">
-
-        <!-- New -->
-        <img class="password" src="./password.png" alt="password box">
-      </div>
-
-      <button class="hotspot" id="hotspot" aria-label="Trigger beams"></button>
+            <div class="video-container" id="videoContainer">
+                <!-- Vimeo embed will go here -->
+            </div>
+        </div>
+        <div class="monitor-frame"></div>
     </div>
-  </div>
 
-  <script>
-    const stage = document.getElementById('stage');
-    const beams = Array.from(document.querySelectorAll('.beam'));
-    const beamAll = document.querySelector('.beamall');
-    const beamGlow = document.querySelector('.beamglow');
-    const hotspot = document.getElementById('hotspot');
+    <script>
+        const ufo = document.getElementById('ufo');
+        const passwordContainer = document.getElementById('passwordContainer');
+        const passwordInput = document.getElementById('passwordInput');
+        const videoContainer = document.getElementById('videoContainer');
+        
+        const beams = [
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-01.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-02.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-03.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-04.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-05.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-06.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-07.png',
+            'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-08.png'
+        ];
 
-    const BEAM_STEP_MS = 80;
-    const HOLD_ALL_MS  = 350;
+        let currentBeam = 0;
+        let beamInterval;
+        let animationComplete = false;
 
-    function hideAllBeams(){
-      beams.forEach(b => b.style.opacity = 0);
-      if (beamAll) beamAll.style.opacity = 0;
-      if (beamGlow) beamGlow.style.opacity = 0;
-    }
+        // Step 1: Show UFO after 1 second
+        setTimeout(() => {
+            ufo.classList.add('visible');
+            
+            // Step 2: Start beam animation after 2 seconds of hover
+            setTimeout(() => {
+                startBeamAnimation();
+            }, 2000);
+        }, 1000);
 
-    async function playBeams(){
-      stage.classList.remove('show-password'); // hide password during blast
-      hideAllBeams();
+        function startBeamAnimation() {
+            beamInterval = setInterval(() => {
+                const beamElement = document.getElementById(`beam${currentBeam + 1}`);
+                beamElement.innerHTML = `<img src="${beams[currentBeam]}" alt="Beam ${currentBeam + 1}">`;
+                beamElement.style.opacity = '1';
+                
+                currentBeam++;
+                
+                if (currentBeam >= beams.length) {
+                    if (!animationComplete) {
+                        animationComplete = true;
+                        setTimeout(() => {
+                            passwordContainer.classList.add('visible');
+                            passwordInput.focus();
+                        }, 500);
+                    }
+                    currentBeam = 0;
+                }
+            }, 200);
+        }
 
-      for (let i = 0; i < beams.length; i++){
-        if (i > 0) beams[i-1].style.opacity = 0;
-        beams[i].style.opacity = 1;
-        await new Promise(r => setTimeout(r, BEAM_STEP_MS));
-      }
-
-      // clear last frame
-      beams[beams.length - 1].style.opacity = 0;
-
-      // show “all beams” briefly
-      if (beamAll) beamAll.style.opacity = 1;
-      if (beamGlow) beamGlow.style.opacity = 1;
-
-      await new Promise(r => setTimeout(r, HOLD_ALL_MS));
-
-      hideAllBeams();
-      stage.classList.add('show-password'); // reveal password box
-    }
-
-    let playing = false;
-    hotspot.addEventListener('click', async () => {
-      if (playing) return;
-      playing = true;
-      try { await playBeams(); }
-      finally { playing = false; }
-    });
-
-    // start clean
-    hideAllBeams();
-  </script>
+        // Password handling
+        passwordInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const password = passwordInput.value.toUpperCase();
+                
+                if (password === 'PROBE') {
+                    // Clear intervals
+                    clearInterval(beamInterval);
+                    
+                    // Hide password container
+                    passwordContainer.style.display = 'none';
+                    
+                    // Show video - Replace with your Vimeo video ID
+                    videoContainer.innerHTML = '<iframe src="https://player.vimeo.com/video/YOUR_VIDEO_ID?autoplay=1&title=0&byline=0&portrait=0" allow="autoplay; fullscreen" allowfullscreen></iframe>';
+                    videoContainer.classList.add('active');
+                } else {
+                    // Access denied
+                    const label = passwordContainer.querySelector('.password-label');
+                    const originalText = label.textContent;
+                    label.textContent = 'ACCESS DENIED';
+                    label.classList.add('access-denied');
+                    passwordContainer.style.animation = 'shake 0.5s';
+                    
+                    setTimeout(() => {
+                        label.textContent = originalText;
+                        label.classList.remove('access-denied');
+                        passwordContainer.style.animation = '';
+                        passwordInput.value = '';
+                    }, 1500);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
