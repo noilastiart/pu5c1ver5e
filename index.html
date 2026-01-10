@@ -111,10 +111,10 @@
         }
 
         .password-label {
-            color: #00ff00;
+            color: #39ff14;
             font-size: 1.2rem;
             margin-bottom: 15px;
-            text-shadow: 0 0 8px #00ff00;
+            text-shadow: 0 0 8px #39ff14;
             letter-spacing: 2px;
             font-weight: normal;
         }
@@ -122,8 +122,8 @@
         .password-input {
             background: transparent;
             border: none;
-            border-bottom: 2px solid #00ff00;
-            color: #00ff00;
+            border-bottom: 2px solid #39ff14;
+            color: #39ff14;
             font-family: 'Courier New', monospace;
             font-size: 1.8rem;
             padding: 5px 10px;
@@ -132,12 +132,23 @@
             letter-spacing: 8px;
             text-transform: uppercase;
             outline: none;
-            text-shadow: 0 0 5px #00ff00;
-            caret-color: #00ff00;
+            text-shadow: 0 0 5px #39ff14;
+            caret-color: transparent;
+        }
+
+        .password-input::after {
+            content: '';
+            display: inline-block;
+            width: 12px;
+            height: 1.2em;
+            background: #39ff14;
+            margin-left: 5px;
+            animation: blink 1s infinite;
+            box-shadow: 0 0 10px #39ff14;
         }
 
         .password-input::placeholder {
-            color: rgba(0, 255, 0, 0.3);
+            color: rgba(57, 255, 20, 0.3);
             letter-spacing: 8px;
         }
 
@@ -146,8 +157,8 @@
         }
 
         @keyframes cursorPulse {
-            0%, 100% { text-shadow: 0 0 5px #00ff00; }
-            50% { text-shadow: 0 0 10px #00ff00, 0 0 15px #00ff00; }
+            0%, 100% { text-shadow: 0 0 5px #39ff14; }
+            50% { text-shadow: 0 0 10px #39ff14, 0 0 15px #39ff14; }
         }
 
         .password-container.shake {
