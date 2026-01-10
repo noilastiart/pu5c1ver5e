@@ -312,8 +312,34 @@
                     passwordContainer.style.display = 'none';
                     
                     // Show video
-                    videoContainer.innerHTML = '<video autoplay controls style="width: 100%; height: 100%; object-fit: contain;"><source src="https://github.com/noilastiart/pu5c1ver5e/releases/download/vd01/pu5c1ver5e-teaser.mp4" type="video/mp4">Your browser does not support the video tag.</video>';
+                    const video = document.createElement('video');
+                    video.autoplay = true;
+                    video.controls = true;
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'contain';
+                    
+                    const source = document.createElement('source');
+                    source.src = 'https://github.com/noilastiart/pu5c1ver5e/releases/download/vd01/pu5c1ver5e-teaser.mp4';
+                    source.type = 'video/mp4';
+                    
+                    video.appendChild(source);
+                    videoContainer.innerHTML = '';
+                    videoContainer.appendChild(video);
                     videoContainer.classList.add('active');
+                    
+                    // Attempt to go fullscreen when video starts playing
+                    video.addEventListener('loadedmetadata', () => {
+                        video.play().then(() => {
+                            if (video.requestFullscreen) {
+                                video.requestFullscreen();
+                            } else if (video.webkitRequestFullscreen) {
+                                video.webkitRequestFullscreen();
+                            } else if (video.msRequestFullscreen) {
+                                video.msRequestFullscreen();
+                            }
+                        });
+                    });
                 } else {
                     // Access denied
                     const originalText = passwordLabel.textContent;
