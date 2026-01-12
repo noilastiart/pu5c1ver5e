@@ -136,23 +136,6 @@
             caret-color: #39ff14;
         }
 
-        /* Custom thick cursor simulation */
-        .password-input::before {
-            content: '';
-            position: absolute;
-            width: 12px;
-            height: 1.5em;
-            background: #39ff14;
-            animation: blink 1s step-end infinite;
-            box-shadow: 0 0 8px #39ff14;
-            pointer-events: none;
-        }
-
-        @keyframes blink {
-            0%, 49% { opacity: 1; }
-            50%, 100% { opacity: 0; }
-        }
-
         .password-input::placeholder {
             color: rgba(57, 255, 20, 0.3);
             letter-spacing: 8px;
@@ -238,9 +221,7 @@
                 <input type="text" class="password-input" id="passwordInput" maxlength="10" autocomplete="off">
             </div>
 
-            <div class="video-container" id="videoContainer">
-                <!-- Vimeo embed will go here -->
-            </div>
+            <div class="video-container" id="videoContainer"></div>
         </div>
     </div>
 
@@ -250,7 +231,6 @@
         const passwordInput = document.getElementById('passwordInput');
         const passwordLabel = document.getElementById('passwordLabel');
         const videoContainer = document.getElementById('videoContainer');
-        const screenArea = document.querySelector('.screen-area');
         
         const beams = [
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-01.png',
@@ -278,11 +258,8 @@
         let beamInterval;
         let animationComplete = false;
 
-        // Step 1: Show UFO after 1 second
         setTimeout(() => {
             ufo.classList.add('visible');
-            
-            // Step 2: Start beam animation after 2 seconds of hover
             setTimeout(() => {
                 startBeamAnimation();
             }, 2000);
@@ -290,10 +267,8 @@
 
         function startBeamAnimation() {
             beamInterval = setInterval(() => {
-                // Hide all beams first
                 beamElements.forEach(el => el.classList.remove('visible'));
                 
-                // Show beams up to current index
                 for (let i = 0; i <= currentBeam; i++) {
                     beamElements[i].innerHTML = `<img src="${beams[i]}" alt="Beam ${i + 1}">`;
                     beamElements[i].classList.add('visible');
@@ -314,21 +289,17 @@
             }, 200);
         }
 
-        // Password handling
         passwordInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const password = passwordInput.value.toUpperCase();
                 
                 if (password === 'PROBE') {
-                    // Clear intervals
                     clearInterval(beamInterval);
                     
-                    // Hide all animated elements
                     ufo.style.display = 'none';
                     beamElements.forEach(el => el.style.display = 'none');
                     passwordContainer.style.display = 'none';
                     
-                    // Show video
                     const video = document.createElement('video');
                     video.autoplay = true;
                     video.controls = true;
@@ -337,7 +308,8 @@
                     video.style.objectFit = 'contain';
                     
                     const source = document.createElement('source');
-                    source.src = 'https://github.com/noilastiart/pu5c1ver5e/releases/download/vd01/pu5c1ver5e-teaser.1.mp4?v=2';
+                    const timestamp = new Date().getTime();
+                    source.src = 'https://github.com/noilastiart/pu5c1ver5e/releases/download/vd01/pu5c1ver5e-teaser.1.mp4?v=' + timestamp;
                     source.type = 'video/mp4';
                     
                     video.appendChild(source);
@@ -345,7 +317,6 @@
                     videoContainer.appendChild(video);
                     videoContainer.classList.add('active');
                     
-                    // Attempt to go fullscreen when video starts playing
                     video.addEventListener('loadedmetadata', () => {
                         video.play().then(() => {
                             if (video.requestFullscreen) {
@@ -358,7 +329,6 @@
                         });
                     });
                 } else {
-                    // Access denied
                     const originalText = passwordLabel.textContent;
                     passwordLabel.textContent = 'ACCESS DENIED';
                     passwordLabel.classList.add('access-denied');
@@ -375,7 +345,6 @@
             }
         });
 
-        // Auto-focus on password input when visible
         const observer = new MutationObserver(() => {
             if (passwordContainer.classList.contains('visible')) {
                 passwordInput.focus();
