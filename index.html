@@ -316,6 +316,10 @@
                     videoContainer.innerHTML = '';
                     videoContainer.appendChild(video);
                     videoContainer.classList.add('active');
+                     // Redirect to desktop when video ends
+    video.addEventListener('ended', () => {
+        window.location.href = 'desktop.html';
+    });
                     
                     video.addEventListener('loadedmetadata', () => {
                         video.play().then(() => {
