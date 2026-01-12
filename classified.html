@@ -1,1 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classified - PUSCIVERSE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .monitor-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1200px;
+            aspect-ratio: 4/3;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        .screen-area {
+            position: absolute;
+            top: 8%;
+            left: 10.5%;
+            width: 79%;
+            height: 79%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .document-image {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px #39ff14;
+            text-decoration: none;
+            display: inline-block;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background: #2de000;
+            box-shadow: 0 0 15px #39ff14;
+        }
+
+        /* D9D Division clickable area - bottom right of document */
+        .d9d-link {
+            position: absolute;
+            bottom: 8%;
+            right: 8%;
+            width: 15%;
+            height: 8%;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .d9d-link:hover {
+            background: rgba(57, 255, 20, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <div class="monitor-container">
+        <div class="screen-area">
+            <a href="desktop.html" class="back-button">← BACK</a>
+            <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/assinvestigator.png" alt="Classified Document" class="document-image">
+            <a href="contact.html" class="d9d-link" title="D9D Division"></a>
+        </div>
+    </div>
+</body>
+</html>
