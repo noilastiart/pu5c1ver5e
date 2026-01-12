@@ -42,7 +42,6 @@
             align-items: center;
         }
 
-        /* UFO AND LANDING PAGE STYLES */
         .ufo {
             position: absolute;
             top: 26%;
@@ -167,7 +166,6 @@
             text-shadow: 0 0 10px #ff0000 !important;
         }
 
-        /* VIDEO CONTAINER */
         .video-container {
             position: absolute;
             top: 8%;
@@ -193,183 +191,6 @@
             background: #000;
         }
 
-        /* DESKTOP EASTER EGG STYLES */
-        .desktop-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            z-index: 6;
-            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/hanginthere.png') no-repeat center center;
-            background-size: cover;
-        }
-
-        .desktop-container.active {
-            display: block;
-        }
-
-        /* Clickable folder hotspots */
-        .folder-hotspot {
-            position: absolute;
-            cursor: pointer;
-            transition: opacity 0.2s;
-        }
-
-        .folder-hotspot:hover {
-            opacity: 0.8;
-        }
-
-        /* Dick's folder - top left */
-        .dicks-folder {
-            top: 18%;
-            left: 16%;
-            width: 10%;
-            height: 12%;
-        }
-
-        /* TOP SECRET folder - right side */
-        .topsecret-folder {
-            top: 38%;
-            right: 8%;
-            width: 12%;
-            height: 14%;
-        }
-
-        /* Epstein List folder - bottom left */
-        .epstein-folder {
-            bottom: 28%;
-            left: 16%;
-            width: 10%;
-            height: 12%;
-        }
-
-        /* DOCUMENT VIEWER */
-        .document-viewer {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            z-index: 7;
-            background: #000;
-        }
-
-        .document-viewer.active {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .document-image {
-            max-width: 95%;
-            max-height: 90%;
-            object-fit: contain;
-        }
-
-        .back-button {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #39ff14;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
-            font-family: 'Courier New', monospace;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            text-shadow: none;
-            box-shadow: 0 0 10px #39ff14;
-            z-index: 10;
-        }
-
-        .back-button:hover {
-            background: #2de000;
-            box-shadow: 0 0 15px #39ff14;
-        }
-
-        /* D9D Division clickable area on classified doc */
-        .d9d-hotspot {
-            position: absolute;
-            bottom: 8%;
-            right: 8%;
-            width: 15%;
-            height: 8%;
-            cursor: pointer;
-            z-index: 8;
-        }
-
-        .d9d-hotspot:hover {
-            background: rgba(57, 255, 20, 0.1);
-        }
-
-        /* CONTACT PAGE */
-        .contact-page {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            z-index: 9;
-            background: #000;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .contact-page.active {
-            display: flex;
-        }
-
-        .contact-content {
-            text-align: center;
-            color: #39ff14;
-            text-shadow: 0 0 10px #39ff14;
-            padding: 20px;
-        }
-
-        .contact-title {
-            font-size: 2rem;
-            letter-spacing: 3px;
-            margin-bottom: 10px;
-            animation: glitch 2s infinite;
-        }
-
-        .contact-clearance {
-            font-size: 1.2rem;
-            letter-spacing: 2px;
-            margin-bottom: 30px;
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
-        }
-
-        .contact-info {
-            font-size: 1.1rem;
-            line-height: 2;
-            letter-spacing: 1px;
-        }
-
-        .contact-label {
-            color: #39ff14;
-            opacity: 0.7;
-        }
-
-        .contact-value {
-            color: #39ff14;
-            font-weight: bold;
-        }
-
-        @keyframes glitch {
-            0%, 100% { text-shadow: 0 0 10px #39ff14; }
-            25% { text-shadow: -2px 0 10px #39ff14, 2px 0 10px #ff0000; }
-            50% { text-shadow: 2px 0 10px #39ff14, -2px 0 10px #0000ff; }
-            75% { text-shadow: 0 0 10px #39ff14; }
-        }
-
         @media (max-width: 768px) {
             .password-label {
                 font-size: 0.9rem;
@@ -378,22 +199,12 @@
                 font-size: 1rem;
                 padding: 8px 15px;
             }
-            .contact-title {
-                font-size: 1.3rem;
-            }
-            .contact-clearance {
-                font-size: 1rem;
-            }
-            .contact-info {
-                font-size: 0.9rem;
-            }
         }
     </style>
 </head>
 <body>
     <div class="monitor-container">
         <div class="screen-area">
-            <!-- LANDING PAGE -->
             <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/ufo.png" alt="UFO" class="ufo" id="ufo">
             
             <div class="beam" id="beam1"></div>
@@ -410,74 +221,16 @@
                 <input type="text" class="password-input" id="passwordInput" maxlength="10" autocomplete="off">
             </div>
 
-            <!-- VIDEO CONTAINER -->
             <div class="video-container" id="videoContainer"></div>
-
-            <!-- DESKTOP EASTER EGG -->
-            <div class="desktop-container" id="desktopContainer">
-                <!-- Clickable folder hotspots -->
-                <div class="folder-hotspot dicks-folder" id="dicksFolder" title="Dick's"></div>
-                <div class="folder-hotspot topsecret-folder" id="topsecretFolder" title="TOP SECRET"></div>
-                <div class="folder-hotspot epstein-folder" id="epsteinFolder" title="Epstein List"></div>
-            </div>
-
-            <!-- DOCUMENT VIEWERS -->
-            <!-- Classified Document -->
-            <div class="document-viewer" id="classifiedDoc">
-                <button class="back-button" id="backFromClassified">← BACK</button>
-                <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/assinvestigator.png" alt="Classified" class="document-image">
-                <div class="d9d-hotspot" id="d9dHotspot" title="D9D Division"></div>
-            </div>
-
-            <!-- Romance Novel -->
-            <div class="document-viewer" id="romanceDoc">
-                <button class="back-button" id="backFromRomance">← BACK</button>
-                <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/probedbylove.png" alt="Romance" class="document-image">
-            </div>
-
-            <!-- CONTACT PAGE -->
-            <div class="contact-page" id="contactPage">
-                <button class="back-button" id="backFromContact">← BACK</button>
-                <div class="contact-content">
-                    <div class="contact-title">D9D DIVISION</div>
-                    <div class="contact-clearance">CLEARANCE LEVEL: CLASSIFIED</div>
-                    <div class="contact-info">
-                        <div><span class="contact-label">ASSIGNED INVESTIGATOR:</span></div>
-                        <div><span class="contact-value">JAMES IFAN MONTGOMERY</span></div>
-                        <br>
-                        <div><span class="contact-label">EMAIL:</span> <span class="contact-value">DESCEND9DOWN@GMAIL.COM</span></div>
-                        <br>
-                        <div><span class="contact-label">PHONE:</span> <span class="contact-value">573.639.0109</span></div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 
     <script>
-        // LANDING PAGE ELEMENTS
         const ufo = document.getElementById('ufo');
         const passwordContainer = document.getElementById('passwordContainer');
         const passwordInput = document.getElementById('passwordInput');
         const passwordLabel = document.getElementById('passwordLabel');
         const videoContainer = document.getElementById('videoContainer');
-        
-        // DESKTOP ELEMENTS
-        const desktopContainer = document.getElementById('desktopContainer');
-        const dicksFolder = document.getElementById('dicksFolder');
-        const topsecretFolder = document.getElementById('topsecretFolder');
-        const epsteinFolder = document.getElementById('epsteinFolder');
-        
-        // DOCUMENT ELEMENTS
-        const classifiedDoc = document.getElementById('classifiedDoc');
-        const romanceDoc = document.getElementById('romanceDoc');
-        const contactPage = document.getElementById('contactPage');
-        
-        // BUTTONS
-        const backFromClassified = document.getElementById('backFromClassified');
-        const backFromRomance = document.getElementById('backFromRomance');
-        const backFromContact = document.getElementById('backFromContact');
-        const d9dHotspot = document.getElementById('d9dHotspot');
         
         const beams = [
             'https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/beam-01.png',
@@ -505,7 +258,6 @@
         let beamInterval;
         let animationComplete = false;
 
-        // LANDING PAGE ANIMATION
         setTimeout(() => {
             ufo.classList.add('visible');
             setTimeout(() => {
@@ -537,7 +289,6 @@
             }, 200);
         }
 
-        // PASSWORD HANDLING
         passwordInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 const password = passwordInput.value.toUpperCase();
@@ -565,12 +316,6 @@
                     videoContainer.innerHTML = '';
                     videoContainer.appendChild(video);
                     videoContainer.classList.add('active');
-                    
-                    // When video ends, show desktop
-                    video.addEventListener('ended', () => {
-                        videoContainer.classList.remove('active');
-                        desktopContainer.classList.add('active');
-                    });
                     
                     video.addEventListener('loadedmetadata', () => {
                         video.play().then(() => {
@@ -600,45 +345,6 @@
             }
         });
 
-        // DESKTOP FOLDER CLICKS
-        dicksFolder.addEventListener('click', () => {
-            desktopContainer.classList.remove('active');
-            romanceDoc.classList.add('active');
-        });
-
-        topsecretFolder.addEventListener('click', () => {
-            desktopContainer.classList.remove('active');
-            classifiedDoc.classList.add('active');
-        });
-
-        epsteinFolder.addEventListener('click', () => {
-            // Rickroll!
-            window.open('https://www.youtube.com/watch?v=dQw4w9WgXcQ', '_blank');
-        });
-
-        // D9D DIVISION CLICK
-        d9dHotspot.addEventListener('click', () => {
-            classifiedDoc.classList.remove('active');
-            contactPage.classList.add('active');
-        });
-
-        // BACK BUTTONS
-        backFromClassified.addEventListener('click', () => {
-            classifiedDoc.classList.remove('active');
-            desktopContainer.classList.add('active');
-        });
-
-        backFromRomance.addEventListener('click', () => {
-            romanceDoc.classList.remove('active');
-            desktopContainer.classList.add('active');
-        });
-
-        backFromContact.addEventListener('click', () => {
-            contactPage.classList.remove('active');
-            classifiedDoc.classList.add('active');
-        });
-
-        // Auto-focus on password input when visible
         const observer = new MutationObserver(() => {
             if (passwordContainer.classList.contains('visible')) {
                 passwordInput.focus();
