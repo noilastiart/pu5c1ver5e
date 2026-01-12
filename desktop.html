@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desktop - PUSCIVERSE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .monitor-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1200px;
+            aspect-ratio: 4/3;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        .screen-area {
+            position: absolute;
+            top: 8%;
+            left: 10.5%;
+            width: 79%;
+            height: 79%;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/hanginthere.png') no-repeat center center;
+            background-size: cover;
+        }
+
+        .folder-link {
+            position: absolute;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+        }
+
+        .folder-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Dick's folder - top left */
+        .dicks-folder {
+            top: 18%;
+            left: 16%;
+            width: 10%;
+            height: 12%;
+        }
+
+        /* TOP SECRET folder - right side */
+        .topsecret-folder {
+            top: 38%;
+            right: 8%;
+            width: 12%;
+            height: 14%;
+        }
+
+        /* Epstein List folder - bottom left */
+        .epstein-folder {
+            bottom: 28%;
+            left: 16%;
+            width: 10%;
+            height: 12%;
+        }
+    </style>
+</head>
+<body>
+    <div class="monitor-container">
+        <div class="screen-area">
+            <!-- Clickable folder areas -->
+            <a href="romance.html" class="folder-link dicks-folder" title="Dick's"></a>
+            <a href="classified.html" class="folder-link topsecret-folder" title="TOP SECRET"></a>
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" class="folder-link epstein-folder" title="Epstein List"></a>
+        </div>
+    </div>
+</body>
+</html>
