@@ -1,1 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Romance Novel - PUSCIVERSE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .monitor-container {
+            position: relative;
+            width: 90vw;
+            max-width: 1200px;
+            aspect-ratio: 4/3;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
+            background-size: contain;
+        }
+
+        .screen-area {
+            position: absolute;
+            top: 8%;
+            left: 10.5%;
+            width: 79%;
+            height: 79%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+
+        .document-image {
+            max-width: 95%;
+            max-height: 95%;
+            object-fit: contain;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: #39ff14;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-family: 'Courier New', monospace;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 10px #39ff14;
+            text-decoration: none;
+            display: inline-block;
+            z-index: 10;
+        }
+
+        .back-button:hover {
+            background: #2de000;
+            box-shadow: 0 0 15px #39ff14;
+        }
+    </style>
+</head>
+<body>
+    <div class="monitor-container">
+        <div class="screen-area">
+            <a href="desktop.html" class="back-button">← BACK</a>
+            <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/probedbylove.png" alt="Romance Novel" class="document-image">
+        </div>
+    </div>
+</body>
+</html>
