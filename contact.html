@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Romance Novel - PUSCIVERSE</title>
+    <title>D9D Division - PUSCIVERSE</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            font-family: 'Courier New', monospace;
             overflow: hidden;
         }
 
@@ -25,7 +26,7 @@
             width: 90vw;
             max-width: 1200px;
             aspect-ratio: 4/3;
-            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/romancewithin.png') no-repeat center center;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
             background-size: contain;
         }
 
@@ -38,18 +39,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: transparent;
-            overflow: hidden;
-        }
-
-        .document-image {
-            display: none;
+            background: #000;
         }
 
         .back-button {
             position: absolute;
-            top: 15px;
-            left: 15px;
+            top: 50%;
+            left: -60px;
+            transform: translateY(-50%);
             background: transparent;
             color: #39ff14;
             border: 2px solid #39ff14;
@@ -70,13 +67,110 @@
             background: rgba(57, 255, 20, 0.1);
             box-shadow: 0 0 10px #39ff14;
         }
+
+        .contact-content {
+            text-align: center;
+            color: #39ff14;
+            text-shadow: 0 0 10px #39ff14;
+            padding: 20px;
+        }
+
+        .contact-title {
+            font-size: 2.5rem;
+            letter-spacing: 4px;
+            margin-bottom: 15px;
+            animation: glitch 2s infinite;
+        }
+
+        .contact-clearance {
+            font-size: 1.3rem;
+            letter-spacing: 3px;
+            margin-bottom: 40px;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+
+        .contact-info {
+            font-size: 1.2rem;
+            line-height: 2.5;
+            letter-spacing: 2px;
+        }
+
+        .contact-label {
+            color: #39ff14;
+            opacity: 0.7;
+            display: block;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .contact-value {
+            color: #39ff14;
+            font-weight: bold;
+            font-size: 1.3rem;
+        }
+
+        .contact-row {
+            margin-bottom: 30px;
+        }
+
+        @keyframes glitch {
+            0%, 100% { 
+                text-shadow: 0 0 10px #39ff14; 
+                transform: translate(0);
+            }
+            25% { 
+                text-shadow: -2px 0 10px #39ff14, 2px 0 10px #ff0000; 
+                transform: translate(-2px, 0);
+            }
+            50% { 
+                text-shadow: 2px 0 10px #39ff14, -2px 0 10px #0000ff; 
+                transform: translate(2px, 0);
+            }
+            75% { 
+                text-shadow: 0 0 10px #39ff14; 
+                transform: translate(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .contact-title {
+                font-size: 1.5rem;
+            }
+            .contact-clearance {
+                font-size: 1rem;
+            }
+            .contact-info {
+                font-size: 0.9rem;
+            }
+            .contact-value {
+                font-size: 1rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="monitor-container">
         <div class="screen-area">
-            <a href="desktop.html" class="back-button">←</a>
-            <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/probedbylove.png" alt="Romance Novel" class="document-image">
+            <a href="classified.html" class="back-button">←</a>
+            <div class="contact-content">
+                <div class="contact-title">D9D DIVISION</div>
+                <div class="contact-clearance">CLEARANCE LEVEL: CLASSIFIED</div>
+                <div class="contact-info">
+                    <div class="contact-row">
+                        <span class="contact-label">ASSIGNED INVESTIGATOR</span>
+                        <span class="contact-value">JAMES IFAN MONTGOMERY</span>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">EMAIL</span><br>
+                        <span class="contact-value">DESCEND9DOWN@GMAIL.COM</span>
+                    </div>
+                    <div class="contact-row">
+                        <span class="contact-label">PHONE</span><br>
+                        <span class="contact-value">573.639.0109</span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
