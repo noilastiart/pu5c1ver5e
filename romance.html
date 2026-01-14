@@ -25,7 +25,7 @@
             width: 90vw;
             max-width: 1200px;
             aspect-ratio: 4/3;
-            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/monitor.png') no-repeat center center;
+            background: url('https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/romancewithin.png') no-repeat center center;
             background-size: contain;
         }
 
@@ -43,39 +43,39 @@
         }
 
         .document-image {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
+            display: none;
         }
 
         .back-button {
             position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #39ff14;
-            color: #000;
-            border: none;
-            padding: 10px 20px;
+            top: 15px;
+            left: 15px;
+            background: transparent;
+            color: #39ff14;
+            border: 2px solid #39ff14;
+            padding: 5px 12px;
             font-family: 'Courier New', monospace;
-            font-size: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
             cursor: pointer;
-            box-shadow: 0 0 10px #39ff14;
+            text-shadow: 0 0 5px #39ff14;
+            box-shadow: 0 0 5px #39ff14;
             text-decoration: none;
             display: inline-block;
             z-index: 10;
+            line-height: 1;
         }
 
         .back-button:hover {
-            background: #2de000;
-            box-shadow: 0 0 15px #39ff14;
+            background: rgba(57, 255, 20, 0.1);
+            box-shadow: 0 0 10px #39ff14;
         }
     </style>
 </head>
 <body>
     <div class="monitor-container">
         <div class="screen-area">
-            <a href="desktop.html" class="back-button">← BACK</a>
+            <a href="desktop.html" class="back-button">←</a>
             <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/probedbylove.png" alt="Romance Novel" class="document-image">
         </div>
     </div>
