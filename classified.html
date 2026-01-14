@@ -46,24 +46,31 @@
             display: none;
         }
 
-        .d9d-link:hover {
-            background: rgba(100, 300, 20, 0.1);
-        }
-
-        /* D9D Division clickable area - adjusted position */
-        .d9d-link {
+        /* Simple arrow button on the right side */
+        .contact-button {
             position: absolute;
-            top: 5%;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 18%;
-            height: 6%;
+            top: 50%;
+            right: 8%;
+            transform: translateY(-50%);
+            background: transparent;
+            color: #39ff14;
+            border: 2px solid #39ff14;
+            padding: 10px 15px;
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: bold;
             cursor: pointer;
-            z-index: 5;
+            text-shadow: 0 0 5px #39ff14;
+            box-shadow: 0 0 5px #39ff14;
+            text-decoration: none;
+            display: inline-block;
+            z-index: 10;
+            line-height: 1;
         }
 
-        .d9d-link:hover {
-            background: rgba(57, 255, 20, 0.1);
+        .contact-button:hover {
+            background: rgba(57, 255, 20, 0.2);
+            box-shadow: 0 0 10px #39ff14;
         }
     </style>
 </head>
@@ -71,7 +78,7 @@
     <div class="monitor-container">
         <div class="screen-area">
             <img src="https://raw.githubusercontent.com/noilastiart/pu5c1ver5e/main/assinvestigator.png" alt="Classified Document" class="document-image">
-            <a href="contact.html" class="d9d-link" title="D9D Division"></a>
+            <a href="contact.html" class="contact-button">→</a>
         </div>
     </div>
 </body>
