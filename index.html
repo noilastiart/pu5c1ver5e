@@ -110,6 +110,15 @@
             to { opacity: 1; }
         }
 
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; }
+        }
+
+        .fade-out {
+            animation: fadeOut 0.5s ease-out forwards;
+        }
+
         .password-label {
             color: #39ff14;
             font-size: 1.2rem;
@@ -175,12 +184,14 @@
             display: none;
             z-index: 5;
             background: #000;
+            opacity: 0;
         }
 
         .video-container.active {
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: fadeIn 0.5s ease-in forwards;
         }
 
         .video-container video {
@@ -296,42 +307,51 @@
                 if (password === 'PROBE') {
                     clearInterval(beamInterval);
                     
-                    ufo.style.display = 'none';
-                    beamElements.forEach(el => el.style.display = 'none');
-                    passwordContainer.style.display = 'none';
+                    // Add fade-out class to all elements
+                    ufo.classList.add('fade-out');
+                    beamElements.forEach(el => el.classList.add('fade-out'));
+                    passwordContainer.classList.add('fade-out');
                     
-                    const video = document.createElement('video');
-                    video.autoplay = true;
-                    video.controls = true;
-                    video.style.width = '100%';
-                    video.style.height = '100%';
-                    video.style.objectFit = 'contain';
-                    
-                    const source = document.createElement('source');
-                    const timestamp = new Date().getTime();
-                    source.src = 'https://github.com/noilastiart/pu5c1ver5e/releases/download/vd02/pu5c1ver5e-teaser.mp4?v=' + timestamp;
-                    source.type = 'video/mp4';
-                    
-                    video.appendChild(source);
-                    videoContainer.innerHTML = '';
-                    videoContainer.appendChild(video);
-                    videoContainer.classList.add('active');
-                     // Redirect to desktop when video ends
-    video.addEventListener('ended', () => {
-        window.location.href = 'desktop.html';
-    });
-                    
-                    video.addEventListener('loadedmetadata', () => {
-                        video.play().then(() => {
-                            if (video.requestFullscreen) {
-                                video.requestFullscreen();
-                            } else if (video.webkitRequestFullscreen) {
-                                video.webkitRequestFullscreen();
-                            } else if (video.msRequestFullscreen) {
-                                video.msRequestFullscreen();
-                            }
+                    // Wait for fade-out to complete, then show video
+                    setTimeout(() => {
+                        ufo.style.display = 'none';
+                        beamElements.forEach(el => el.style.display = 'none');
+                        passwordContainer.style.display = 'none';
+                        
+                        const video = document.createElement('video');
+                        video.autoplay = true;
+                        video.controls = true;
+                        video.style.width = '100%';
+                        video.style.height = '100%';
+                        video.style.objectFit = 'contain';
+                        
+                        const source = document.createElement('source');
+                        const timestamp = new Date().getTime();
+                        source.src = 'https://github.com/noilastiart/pu5c1ver5e/releases/download/vd02/pu5c1ver5e-teaser.mp4?v=' + timestamp;
+                        source.type = 'video/mp4';
+                        
+                        video.appendChild(source);
+                        videoContainer.innerHTML = '';
+                        videoContainer.appendChild(video);
+                        videoContainer.classList.add('active');
+                        
+                        // Redirect to desktop when video ends
+                        video.addEventListener('ended', () => {
+                            window.location.href = 'desktop.html';
                         });
-                    });
+                        
+                        video.addEventListener('loadedmetadata', () => {
+                            video.play().then(() => {
+                                if (video.requestFullscreen) {
+                                    video.requestFullscreen();
+                                } else if (video.webkitRequestFullscreen) {
+                                    video.webkitRequestFullscreen();
+                                } else if (video.msRequestFullscreen) {
+                                    video.msRequestFullscreen();
+                                }
+                            });
+                        });
+                    }, 500); // Wait for fade-out animation to complete
                 } else {
                     const originalText = passwordLabel.textContent;
                     passwordLabel.textContent = 'ACCESS DENIED';
